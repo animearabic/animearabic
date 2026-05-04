@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  background:#020617;
+  color:white;
+  font-family:'Cairo',sans-serif;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+  color:#a855f7;
+}
+
+.box{
+  max-width:500px;
+  margin:auto;
+  background:#0f172a;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 0 15px purple;
+}
+
+input, select{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#9333ea;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#7e22ce;
+}
+
+.list{
+  margin-top:20px;
+}
+
+.item{
+  background:#1e293b;
+  padding:10px;
+  margin:5px 0;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.delete{
+  background:red;
+  padding:5px 10px;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚙️ لوحة التحكم</h1>
+
+<div class="box">
+
+  <input id="title" placeholder="اسم الأنمي">
+  <input id="image" placeholder="رابط الصورة">
+  <input id="video" placeholder="رابط يوتيوب">
+
+  <select id="type">
+    <option value="today">أنمي اليوم</option>
+    <option value="best">أفضل الأنمي</option>
+  </select>
+
+  <button onclick="add()">➕ إضافة</button>
+  <button onclick="show()">📋 عرض الكل</button>
+
+  <div class="list" id="list"></div>
+
+</div>
+
+<script>
+function add(){
+ let data = JSON.parse(localStorage.getItem("animeData")) || [];
+
+ data.push({
+   title: title.value,
+   image: image.value,
+   video: video.value,
+   type: type.value
+ });
+
+ localStorage.setItem("animeData", JSON.stringify(data));
+ alert("تمت الإضافة 🔥");
+}
+
+function show(){
+ let data = JSON.parse(localStorage.getItem("animeData")) || [];
+ let list = document.getElementById("list");
+ list.innerHTML="";
+
+ data.forEach((a,i)=>{
+   list.innerHTML += `
+   <div class="item">
+     ${a.title}
+     <span class="delete" onclick="del(${i})">❌</span>
+   </div>`;
+ });
+}
+
+function del(i){
+ let data = JSON.parse(localStorage.getItem("animeData"));
+ data.splice(i,1);
+ localStorage.setItem("animeData", JSON.stringify(data));
+ show();
+}
+</script>
+
+</body>
+</html>
